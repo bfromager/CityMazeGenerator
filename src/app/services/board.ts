@@ -43,9 +43,10 @@ const SIZE =6;
 export class Board {
     // public direction: Direction = Direction.Up;
     private _Cells: Matrix<Cell> = [];
+    private _availableDestinations: Position[] = [];
 
 
-    constructor(public position: Point, public direction: Direction, fromBoard?: Board) {
+    constructor(public position: Position, fromBoard?: Board) {
 
         for (let row = 0; row < SIZE; ++row) {
             this._Cells[row] = [];
@@ -57,20 +58,22 @@ export class Board {
         this.getCell(0,0).used = true;
         this.getCell(3,2).used = true;
 
-        // this.debugBoard();
+        this._availableDestinations = this.getAvailableDestinations(position);
     }
 
     debugBoard(){
         debugMatrix(this._Cells);
-    }
+        for (let position of this._availableDestinations) {
+            console.log("nextPosition : (" + position.origin.x.toString() + "," +  position.origin.y.toString() + ") -> " + position.direction.toString());    }
+        }
 
     getCell(col: number,row: number): Cell {
         return this._Cells[row][col];
     }
 
-    nextCellFromPosition(position: Position): Position | boolean {
-        let point: Point = <Point>{x: position.origin.x, y: position.origin.y};
-        let result: Position = <Position>{origin: point, direction: position.direction};
+    private nextCellFromPosition(position: Position): Position | boolean {
+        let point: Point = {x: position.origin.x, y: position.origin.y};
+        let result: Position = {origin: point, direction: position.direction};
 
         // Cell 0,0
         if (position.origin.x == 1 && position.origin.y == 0 && position.direction == Direction.Left) {
@@ -131,6 +134,19 @@ export class Board {
             return false;
         else
             return result;
+    }
+
+    private getAvailableDestinations(position: Position): Position[] {
+        // console.log("position : (" + position.origin.x.toString() + "," +  position.origin.y.toString() + ") -> " + position.direction.toString());
+        let positions: Position[] = [];
+        let result = this.nextCellFromPosition(position);
+        while (result) {
+            let nextPosition = <Position>result;
+            // console.log("nextPosition : (" + nextPosition.origin.x.toString() + "," +  nextPosition.origin.y.toString() + ") -> " + nextPosition.direction.toString());
+            positions.push(nextPosition);
+            result = this.nextCellFromPosition(nextPosition);
+        }
+        return positions;
     }
 
     // setCell(x: number,y: number, cell: Cell){
