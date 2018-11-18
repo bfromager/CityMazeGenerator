@@ -2,13 +2,34 @@
 
 // https://stackoverflow.com/questions/28150967/typescript-cloning-object
 
+// 0 :
+// 1 : this._Cells[1][1].pass.add(Direction.Up);
+// 2 : this._Cells[1][2].pass                  .add(Direction.Right);
+// 3 : this._Cells[1][3].pass.add(Direction.Up).add(Direction.Right);
+//
+// 4 : this._Cells[3][0].pass                                       .add(Direction.Down);
+// 5 : this._Cells[3][1].pass.add(Direction.Up)                     .add(Direction.Down);
+// 6 : this._Cells[3][2].pass                  .add(Direction.Right).add(Direction.Down);
+// 7 : this._Cells[3][3].pass.add(Direction.Up).add(Direction.Right).add(Direction.Down);
+//
+// 8 : this._Cells[4][0].pass                                                           .add(Direction.Left);
+// 9 : this._Cells[4][1].pass.add(Direction.Up)                                         .add(Direction.Left);
+// A : this._Cells[4][2].pass                  .add(Direction.Right)                    .add(Direction.Left);
+// B : this._Cells[4][3].pass.add(Direction.Up).add(Direction.Right)                    .add(Direction.Left);
+//
+// C : this._Cells[5][0].pass                                       .add(Direction.Down).add(Direction.Left);
+// D : this._Cells[5][1].pass.add(Direction.Up)                     .add(Direction.Down).add(Direction.Left);
+// E : this._Cells[5][2].pass                  .add(Direction.Right).add(Direction.Down).add(Direction.Left);
+// F : this._Cells[5][3].pass.add(Direction.Up).add(Direction.Right).add(Direction.Down).add(Direction.Left);
+
+
 import {debugMatrix, Matrix} from './matrix';
 
 export const enum Direction {
     Up = 0,
-    Right = 1,
-    Down = 2,
-    Left = 3,
+    Right,
+    Down,
+    Left,
 }
 
 export interface Point {
@@ -30,7 +51,13 @@ export class Cell {
     }
 
     toString(): string {
-        return this.used ? 'X' : '.' ;
+        let i=0;
+        i += (this.pass.has(Direction.Up) ? 1 : 0);
+        i += (this.pass.has(Direction.Right) ? 2 : 0);
+        i += (this.pass.has(Direction.Down) ? 4 : 0);
+        i += (this.pass.has(Direction.Left) ? 8 : 0);
+        let S = (i > 0 ? ((i > 9 ? String.fromCharCode(55 + i) : i.toString())) : '.');
+        return this.used ? 'X' : S ;
     }
 
     copy(): Cell {
@@ -55,9 +82,9 @@ export class Board {
             }
         }
 
+
         this.getCell(0,0).used = true;
         this.getCell(3,2).used = true;
-
         this._availableDestinations = this.getAvailableDestinations(position);
     }
 
