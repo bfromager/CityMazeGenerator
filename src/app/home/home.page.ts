@@ -10,11 +10,13 @@ export class HomePage {
 
     constructor() {
         let board: Board = new Board({origin: {x:5,y:0}, direction: Direction.Left});
-        let board2: Board = new Board({origin: {x:3,y:5}, direction: Direction.Up}, board);
-
-        board.getCell(5,0).used = true;
-        board2.getCell(3,5).used = true;
         board.debugBoard();
+
+        board.getCell(3,4).used = true;
+        board.getCell(3,3).pass.add(Direction.Right);
+        board.getCell(4,2).pass.add(Direction.Right);
+
+        let board2: Board = new Board({origin: {x:3,y:5}, direction: Direction.Up}, board);
         board2.debugBoard();
 
         // let position: Position;

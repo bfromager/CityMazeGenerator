@@ -44,10 +44,13 @@ export interface Position {
 
 export class Cell {
     used: boolean = false;
-    pass = new Set();
+    pass:Set<Direction> = new Set<Direction>();
 
-    constructor(used? : boolean) {
+    constructor(used? : boolean, pass? :Set<Direction> ) {
         if (used) this.used = used;
+        if (pass) for (let d of pass) {
+            this.pass.add(d);
+        }
     }
 
     toString(): string {
@@ -61,7 +64,7 @@ export class Cell {
     }
 
     copy(): Cell {
-        return new Cell(this.used);
+        return new Cell(this.used, this.pass);
     }
 } ;
 
@@ -94,7 +97,11 @@ export class Board {
             console.log("nextPosition : (" + position.origin.x.toString() + "," +  position.origin.y.toString() + ") -> " + position.direction.toString());    }
         }
 
-    getCell(col: number,row: number): Cell {
+    getCellFromPoint(point: Point): Cell {
+        return this.getCell(point.x, point.y);
+    }
+
+    getCell(col: number, row: number): Cell {
         return this._Cells[row][col];
     }
 
@@ -170,7 +177,13 @@ export class Board {
         while (result) {
             let nextPosition = <Position>result;
             // console.log("nextPosition : (" + nextPosition.origin.x.toString() + "," +  nextPosition.origin.y.toString() + ") -> " + nextPosition.direction.toString());
-            positions.push(nextPosition);
+
+            let cell = this.getCellFromPoint(nextPosition.origin);
+            if (cell.pass.has(nextPosition.direction)) break;
+
+            if (! cell.used) {
+                positions.push(nextPosition);
+            }
             result = this.nextCellFromPosition(nextPosition);
         }
         return positions;
