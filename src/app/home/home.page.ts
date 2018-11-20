@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import {Board, Direction, Point, Position} from '../services/board';
+import {Board} from '../services/board';
+import {Direction, Point, Position} from '../services/declarations';
+import {rotateDirection, rotatePoint} from '../services/pieces';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +20,27 @@ export class HomePage {
 
         let board2: Board = new Board({origin: {x:3,y:5}, direction: Direction.Up}, board);
         board2.debugBoard();
+
+
+        let point: Point = {x:5,y:0};
+        let point2: Point;
+        point2 = rotatePoint(point,0);
+        console.log(point2);
+        point2 = rotatePoint(point,1);
+        console.log(point2);
+        point2 = rotatePoint(point,2);
+        console.log(point2);
+        point2 = rotatePoint(point,3);
+        console.log(point2);
+
+        let a = Direction.Left;
+        console.log(a);
+        // console.log(Direction[1]);
+        // console.log(Direction[(Direction.Left+1)%4]);
+
+        console.log(rotateDirection(a, 1));
+        console.log(rotateDirection(Direction.Down, 2));
+
 
         // let position: Position;
         //

@@ -24,23 +24,8 @@
 
 
 import {debugMatrix, Matrix} from './matrix';
+import {Direction, Point, Position} from './declarations';
 
-export const enum Direction {
-    Up = 0,
-    Right,
-    Down,
-    Left,
-}
-
-export interface Point {
-    x : number;
-    y : number;
-}
-
-export interface Position {
-    origin : Point;
-    direction : Direction;
-}
 
 export class Cell {
     used: boolean = false;
