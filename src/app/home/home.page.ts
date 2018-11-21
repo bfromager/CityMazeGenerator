@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Board} from '../services/board';
 import {Direction, Point, Position} from '../services/declarations';
-import {Piece, rotatePiece} from '../services/pieces';
+import {mirrorPiece, Piece, rotatePiece} from '../services/pieces';
 // import {rotateDirection, rotatePoint} from '../services/pieces';
 
 @Component({
@@ -23,7 +23,9 @@ export class HomePage {
         board2.debugBoard();
 
         let piece: Piece = {points: [{x:5, y:3}], direction: Direction.Left };
+        console.log(piece);
         console.log(rotatePiece(piece,1));
+        console.log(mirrorPiece(piece));
 
         // let position: Position;
         //

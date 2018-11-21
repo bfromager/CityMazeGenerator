@@ -22,6 +22,14 @@ function rotateDirection(direction: Direction, nbQuartDeTour: number) : Directio
     return <Direction>(direction + nbQuartDeTour)%4;
 }
 
+export function rotatePiece (piece: Piece, nbQuartDeTour: number) : Piece {
+    let result: Piece = {points : [], direction: rotateDirection(piece.direction,nbQuartDeTour)};
+    for (let point of piece.points ) {
+        result.points.push(rotatePoint(point,nbQuartDeTour))
+    }
+    return result;
+}
+
 function mirrorPoint(point: Point): Point {
     return <Point>{x: -point.x, y: point.y};
 }
@@ -34,13 +42,14 @@ function mirrorDirection(direction: Direction): Direction {
     }
 }
 
-export function rotatePiece (piece: Piece, nbQuartDeTour: number) : Piece {
-    let result: Piece = {points : [], direction: rotateDirection(piece.direction,nbQuartDeTour)};
+export function mirrorPiece (piece: Piece) : Piece {
+    let result: Piece = {points : [], direction: mirrorDirection(piece.direction)};
     for (let point of piece.points ) {
-        result.points.push(rotatePoint(point,nbQuartDeTour))
+        result.points.push(mirrorPoint(point))
     }
     return result;
 }
+
 
 // const BasePieces: Piece[] = [
 //     [],  // arrivée x 2
