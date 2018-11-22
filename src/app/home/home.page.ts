@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import {Board} from '../services/board';
-import {Direction, Point, Position} from '../services/declarations';
-import {mirrorPiece, Piece, rotatePiece} from '../services/pieces';
-// import {rotateDirection, rotatePoint} from '../services/pieces';
+import {Direction, Face, Point, Position} from '../services/declarations';
+import {initPieces, Piece, PieceArray} from '../services/pieces';
 
 @Component({
   selector: 'app-home',
@@ -22,10 +21,12 @@ export class HomePage {
         let board2: Board = new Board({origin: {x:3,y:5}, direction: Direction.Up}, board);
         board2.debugBoard();
 
-        let piece: Piece = {points: [{x:5, y:3}], direction: Direction.Left };
-        console.log(piece);
-        console.log(rotatePiece(piece,1));
-        console.log(mirrorPiece(piece));
+        // console.log("-----------------");
+        // let piece: Piece = {points: [{x:5, y:3}], direction: Direction.Left };
+        // console.log(piece);
+        // //console.log(rotatePiece(piece,1));
+        // console.log(mirrorPiece(piece));
+        // console.log("-----------------");
 
         // let position: Position;
         //
@@ -50,5 +51,8 @@ export class HomePage {
         // position = {origin: {x:0, y:2}, direction: Direction.Right};
         // board.getAvailableDestinations(position);
 
+        let pieceArray = initPieces();
+        console.log(pieceArray[0].get(Face.Red).get(Direction.Right));
+        console.log(pieceArray[0].get(Face.Blue).get(Direction.Right));
     }
 }

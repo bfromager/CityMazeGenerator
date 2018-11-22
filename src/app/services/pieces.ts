@@ -22,7 +22,7 @@ function rotateDirection(direction: Direction, nbQuartDeTour: number) : Directio
     return <Direction>(direction + nbQuartDeTour)%4;
 }
 
-export function rotatePiece (piece: Piece, nbQuartDeTour: number) : Piece {
+function rotatePiece (piece: Piece, nbQuartDeTour: number) : Piece {
     let result: Piece = {points : [], direction: rotateDirection(piece.direction,nbQuartDeTour)};
     for (let point of piece.points ) {
         result.points.push(rotatePoint(point,nbQuartDeTour))
@@ -42,7 +42,7 @@ function mirrorDirection(direction: Direction): Direction {
     }
 }
 
-export function mirrorPiece (piece: Piece) : Piece {
+function mirrorPiece (piece: Piece) : Piece {
     let result: Piece = {points : [], direction: mirrorDirection(piece.direction)};
     for (let point of piece.points ) {
         result.points.push(mirrorPoint(point))
@@ -51,17 +51,76 @@ export function mirrorPiece (piece: Piece) : Piece {
 }
 
 
-// const BasePieces: Piece[] = [
-//     [],  // arrivée x 2
-//     [],  // départ x 2
-//     [],  // rotation à droite x2
-//     [],  // demi tour à droite x2
-//     [],  // demi tour à gauche
-//     []   // decalage à gauche
-// ];
-//
-//
-// export function initPieces() {
-//
-//
-// }
+// http://www.smartgamesandpuzzles.com/inventor/CityMaze.html
+
+const BasePieces: Piece[] = [
+    // départ x 2
+    {points: [
+        {x:0, y:0},
+        {x:0, y:-1}
+        ],
+    direction: Direction.Up },
+
+    // arrivée x 2
+    {points: [
+        {x:0, y:0},
+    ],
+    direction: Direction.Up },
+
+    // rotation à droite x2
+    {points: [
+        {x:0, y:0},
+        {x:1, y:0},
+    ],
+    direction: Direction.Right },
+
+    // demi tour à droite x2
+    {points: [
+        {x:0, y:0},
+        {x:1, y:0},
+        {x:1, y:1},
+    ],
+    direction: Direction.Down },
+
+    // demi tour à gauche
+    {points: [
+        {x:0, y:0},
+        {x:-1, y:0},
+        {x:-1, y:1},
+    ],
+    direction: Direction.Down },
+
+    // decalage à gauche
+    {points: [
+        {x:0, y:0},
+        {x:-1, y:0},
+        {x:-1, y:-1},
+    ],
+    direction: Direction.Up },
+];
+
+
+export function initPieces(): PieceArray {
+    let result: PieceArray = [];
+
+    for (let redPiece of BasePieces) {
+        let bluePiece = mirrorPiece(redPiece);
+        let coloredPiecesArray : ColoredPiecesArray = new Map();
+
+        let redFaces : RotatedPiecesArray = new Map();
+        let blueFaces : RotatedPiecesArray = new Map();
+
+
+        for (let d = 0; d < 4; ++d) {
+            redFaces.set(<Direction>d, rotatePiece(redPiece,d));
+            blueFaces.set(<Direction>d, rotatePiece(bluePiece,d));
+        }
+
+        coloredPiecesArray.set(Face.Red, redFaces);
+        coloredPiecesArray.set(Face.Blue, blueFaces);
+
+        result.push(coloredPiecesArray);
+    }
+
+    return result;
+}
