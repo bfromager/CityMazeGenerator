@@ -31,33 +31,52 @@ export class Cell {
     used: boolean = false;
     pass:Set<Direction> = new Set<Direction>();
 
-    constructor(used? : boolean, pass? :Set<Direction> ) {
+    // constructor(used? : boolean, pass? :Set<Direction> ) {
+    //     if (used) this.used = used;
+    //     if (pass) for (let d of pass) {
+    //         this.pass.add(d);
+    //     }
+    // }
+    //
+    // toString(): string {
+    //     let i=0;
+    //     i += (this.pass.has(Direction.Up) ? 1 : 0);
+    //     i += (this.pass.has(Direction.Right) ? 2 : 0);
+    //     i += (this.pass.has(Direction.Down) ? 4 : 0);
+    //     i += (this.pass.has(Direction.Left) ? 8 : 0);
+    //     let S = (i > 0 ? ((i > 9 ? String.fromCharCode(55 + i) : i.toString())) : '.');
+    //     return this.used ? 'X' : S ;
+    // }
+    //
+    // copy(): Cell {
+    //     return new Cell(this.used, this.pass);
+    // }
+
+    debug: string = '';
+    constructor(used? : boolean, debug? :string ) {
         if (used) this.used = used;
-        if (pass) for (let d of pass) {
-            this.pass.add(d);
-        }
+        if (debug)
+            this.debug = debug;
+        else
+            this.debug = '.';
     }
 
     toString(): string {
-        let i=0;
-        i += (this.pass.has(Direction.Up) ? 1 : 0);
-        i += (this.pass.has(Direction.Right) ? 2 : 0);
-        i += (this.pass.has(Direction.Down) ? 4 : 0);
-        i += (this.pass.has(Direction.Left) ? 8 : 0);
-        let S = (i > 0 ? ((i > 9 ? String.fromCharCode(55 + i) : i.toString())) : '.');
-        return this.used ? 'X' : S ;
+
+        return this.used ? 'X' : (this.debug);
     }
 
     copy(): Cell {
-        return new Cell(this.used, this.pass);
+        return new Cell(this.used, this.debug);
     }
+
 } ;
 
 const SIZE =6;
 
 export class Board {
     // public direction: Direction = Direction.Up;
-    private _Cells: Matrix<Cell> = [];
+    public _Cells: Matrix<Cell> = [];
     private _availableDestinations: Position[] = [];
 
 
