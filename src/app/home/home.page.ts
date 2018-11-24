@@ -23,7 +23,6 @@ export class HomePage {
         // board2.debugBoard();
 
 
-
         // console.log("-----------------");
         // let piece: Piece = {points: [{x:5, y:3}], direction: Direction.Left };
         // console.log(piece);
@@ -54,42 +53,99 @@ export class HomePage {
         // position = {origin: {x:0, y:2}, direction: Direction.Right};
         // board.getAvailableDestinations(position);
 
+        this.debugRotatePiece();
+    }
+
+    private debugRotatePiece() {
         let pieceArray = initPieces();
         console.log(pieceArray[0].get(Face.Red).get(Direction.Right));
         console.log(pieceArray[0].get(Face.Blue).get(Direction.Right));
 
-        for (let piece of pieceArray) {
+        for (let pieces of pieceArray) {
             let debugArray = []
 
             for (let d = 0; d < 4; ++d) {
-                let redPiece = piece.get(Face.Red).get(<Direction>d);
-                let bluePiece = piece.get(Face.Blue).get(<Direction>d);
+                let redPiece = pieces.get(Face.Red).get(<Direction>d);
+                let bluePiece = pieces.get(Face.Blue).get(<Direction>d);
 
                 let board: Board = new Board({origin: {x:0,y:0}, direction: Direction.Up});
 
-                switch (<Direction>d) {
-                    case Direction.Up : {
-                        board.getCell(1,4).debug = '^';
-                        board.getCell(4,4).debug = '^';
-                        break;
-                    }
-                    case Direction.Down : {
-                        board.getCell(1,4).debug = 'v';
-                        board.getCell(4,4).debug = 'v';
-                        break;
-                    }
-                    case Direction.Left : {
-                        board.getCell(1,4).debug = '<';
-                        board.getCell(4,4).debug = '<';
-                        break;
-                    }
-                    case Direction.Right : {
-                        board.getCell(1,4).debug = '>';
-                        board.getCell(4,4).debug = '>';
-                        break;
-                    }
+                for (let i = 0; i < redPiece.points.length; ++i) {
+                    let point = redPiece.points[i];
 
+                    if (i == redPiece.points.length - 1) {
+                        switch (redPiece.direction) {
+                            case Direction.Up : {
+                                board.getCell(1 + point.x,4 + point.y).debug = '^';
+                                break;
+                            }
+                            case Direction.Down : {
+                                board.getCell(1 + point.x,4 + point.y).debug = 'v';
+                                break;
+                            }
+                            case Direction.Left : {
+                                board.getCell(1 + point.x,4 + point.y).debug = '<';
+                                break;
+                            }
+                            case Direction.Right : {
+                                board.getCell(1 + point.x,4 + point.y).debug = '>';
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        board.getCell(1 + point.x,4 + point.y).debug = 'O';
+
+                    }
                 }
+                for (let i = 0; i < bluePiece.points.length; ++i) {
+                    let point = bluePiece.points[i];
+
+                    if (i == bluePiece.points.length - 1) {
+                        switch (bluePiece.direction) {
+                            case Direction.Up : {
+                                board.getCell(4 + point.x,4 + point.y).debug = '^';
+                                break;
+                            }
+                            case Direction.Down : {
+                                board.getCell(4 + point.x,4 + point.y).debug = 'v';
+                                break;
+                            }
+                            case Direction.Left : {
+                                board.getCell(4 + point.x,4 + point.y).debug = '<';
+                                break;
+                            }
+                            case Direction.Right : {
+                                board.getCell(4 + point.x,4 + point.y).debug = '>';
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        board.getCell(4 + point.x,4 + point.y).debug = 'O';
+
+                    }
+                }
+
+                //
+                // switch (bluePiece.direction) {
+                //     case Direction.Up : {
+                //         board.getCell(4,4).debug = '^';
+                //         break;
+                //     }
+                //     case Direction.Down : {
+                //         board.getCell(4,4).debug = 'v';
+                //         break;
+                //     }
+                //     case Direction.Left : {
+                //         board.getCell(4,4).debug = '<';
+                //         break;
+                //     }
+                //     case Direction.Right : {
+                //         board.getCell(4,4).debug = '>';
+                //         break;
+                //     }
+                // }
 
                 debugArray.push(board._Cells);
 

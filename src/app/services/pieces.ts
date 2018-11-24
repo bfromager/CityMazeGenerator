@@ -12,9 +12,9 @@ export type PieceArray = ColoredPiecesArray[];
 function rotatePoint(point: Point, nbQuartDeTour: number): Point {
     switch (nbQuartDeTour%4) {
         case 0 : { return <Point>{x:  point.x, y:  point.y};}
-        case 1 : { return <Point>{x:  point.y, y: -point.x};}
+        case 1 : { return <Point>{x: -point.y, y:  point.x};}
         case 2 : { return <Point>{x: -point.x, y: -point.y};}
-        case 3 : { return <Point>{x: -point.y, y:  point.x};}
+        case 3 : { return <Point>{x:  point.y, y: -point.x};}
     }
 }
 
